@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "dd5b1993-7387-4de0-8c21-19255c15e499",
+		"name": "VacQ Assignment#13",
+		"description": "Chula Software-Dev-1 Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17831860"
+	},
+	"item": [
+		{
+			"name": "Hospitals #13",
+			"item": [
+				{
+					"name": "Get All Hospitals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"console.log(response);\r",
+									"\r",
+									"pm.test(\"There are some hospitals!!\", () => {\r",
+									"    pm.expect(response.count).to.be.above(0);\r",
+									"})\r",
+									"\r",
+									"postman.setNextRequest(\"Create New Hospital\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/hospitals/",
+							"host": ["{{URL}}"],
+							"path": ["hospitals", ""]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"postman.setNextRequest(\"Update Single Hospital\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/hospitals/:hospital_ID",
+							"host": ["{{URL}}"],
+							"path": ["hospitals", ":hospital_ID"],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"const new_hospital_id = response.data.id;\r",
+									"\r",
+									"pm.globals.set(\"global_hospital_ID\", new_hospital_id);\r",
+									"\r",
+									"postman.setNextRequest(\"Get Single Hospital\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"address\":\"Changwattana Pakkret\",\n    \"district\": \"Pakkret\",\n    \"province\": \"Nonthaburi\",\n    \"postalcode\": \"10110\",\n    \"tel\":\"02-8369999\",\n    \"region\": \"กรุงเทพมหานคร (Bangkok)\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/hospitals",
+							"host": ["{{URL}}"],
+							"path": ["hospitals"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"postman.setNextRequest(\"Delete Single Hospital\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFullName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/hospitals/:hospital_ID",
+							"host": ["{{URL}}"],
+							"path": ["hospitals", ":hospital_ID"],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Hospital",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"postman.setNextRequest(null);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/hospitals/:hospital_ID",
+							"host": ["{{URL}}"],
+							"path": ["hospitals", ":hospital_ID"],
+							"variable": [
+								{
+									"key": "hospital_ID",
+									"value": "{{global_hospital_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://chula-vacq-backend.us-east-1.elasticbeanstalk.com/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "ADMIN_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDQ5MmQ5MDJlMDk0OWRjMGM4ZTY0OSIsImlhdCI6MTcxMjIxNzAzNCwiZXhwIjoxNzE0ODA5MDM0fQ.BPO_vET7vOwlevoXr8EVKLBt7yO7A2bPZs2sZ4W-GMw",
+			"type": "string"
+		}
+	]
+}
