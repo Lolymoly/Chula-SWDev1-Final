@@ -10,7 +10,7 @@ const {
 const router = express.Router({ mergeParams: true });
 const { protect, authorize } = require("../middleware/auth");
 
-// Assuming reservations can be accessed from the restaurant context /restaurants/:restaurantId/reservations
+// Reservations can be accessed from the restaurant context /restaurants/:restaurantId/reservations
 router
 	.route("/")
 	.get(protect, getReservations) // User and admin can view reservations
