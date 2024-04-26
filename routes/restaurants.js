@@ -6,14 +6,38 @@ const {
 	createRestaurant,
 	updateRestaurant,
 	deleteRestaurant,
+	searchRestaurants,
+	toggleFavoriteRestaurant,
+	banUserFromRestaurant,
+	unbanUserFromRestaurant,
 } = require("../controllers/restaurants");
 
 const reservationsRouter = require("./reservations");
 
 const router = express.Router();
 
-// Use nested routes for reservations associated with a specific restaurant
-router.use("/:restaurantId/reservations", reservationsRouter);
+// Search and favorite functionality
+router.get("/search", searchRestaurants); // Public search for restaurants
+router.post(
+	"/:restaurantId/toggle-favorite/:userId",
+	protect,
+	toggleFavoriteRestaurant
+); // Toggle favorite for logged-in users
+
+// Ban a user from a restaurant (Admin only)
+router.post(
+	"/:restaurantId/ban-user/:userId",
+	protect,
+	authorize("admin"),
+	banUserFromRestaurant
+);
+
+router.post(
+	"/:restaurantId/unban-user/:userId",
+	protect,
+	authorize("admin"),
+	unbanUserFromRestaurant
+);
 
 router
 	.route("/")

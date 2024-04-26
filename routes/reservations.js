@@ -5,16 +5,18 @@ const {
 	createReservation,
 	updateReservation,
 	deleteReservation,
+	getUserReservations,
 } = require("../controllers/reservations");
 
 const router = express.Router({ mergeParams: true });
 const { protect, authorize } = require("../middleware/auth");
 
-// Reservations can be accessed from the restaurant context /restaurants/:restaurantId/reservations
 router
 	.route("/")
-	.get(protect, getReservations) // User and admin can view reservations
+	.get(protect, authorize("admin"), getReservations) // User and admin can view reservations
 	.post(protect, createReservation); // Only logged-in users can create reservations
+
+router.get("/user/:userId", protect, getUserReservations);
 
 router
 	.route("/:id")

@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema(
 		name: {
 			type: String,
 			required: [true, "Please add a name"],
-			minlength: 6,
 		},
 		telephone: {
 			type: String,
