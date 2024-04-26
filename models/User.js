@@ -9,6 +9,11 @@ const UserSchema = new mongoose.Schema(
 			required: [true, "Please add a name"],
 			minlength: 6,
 		},
+		telephone: {
+			type: String,
+			required: [true, "Please add a telephone number"],
+			minlength: 10,
+		},
 		email: {
 			type: String,
 			required: [true, "Please add an email"],
@@ -21,13 +26,26 @@ const UserSchema = new mongoose.Schema(
 		password: {
 			type: String,
 			required: [true, "Please add a password"],
-			minlength: 6,
+			minlength: 4,
 		},
 		role: {
 			type: String,
-			enum: ["user", "admin"],
+			enum: ["user", "admin", "owner"],
 			default: "user",
 		},
+		banList: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: "Restaurant",
+			},
+		],
+		favList: [
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: "Restaurant",
+			},
+		],
+
 		resetPasswordToken: String,
 		resetPasswordExpire: Date,
 	},
